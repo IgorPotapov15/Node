@@ -9,7 +9,8 @@ exports.signup = (req, res) => {
   User.create({
     username: req.body.username,
     email: req.body.email,
-    password: cryptoJS.AES.encrypt(req.body.password, config.secret).toString()
+    password: cryptoJS.AES.encrypt(req.body.password, config.secret).toString(),
+    dob: req.body.dob
   })
   .then(() => {
     res.send({ message: 'User war registered successfully' })

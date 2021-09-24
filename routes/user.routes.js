@@ -27,22 +27,4 @@ module.exports = function(app) {
     authJwt.verifyToken,
     controller.deletePersonal
   )
-
-  // app.get(
-  //   '/api/test/user',
-  //   authJwt.verifyToken,
-  //   controller.userBoard
-  // )
-
-  // app.get(
-  //   '/api/test/mod',
-  //   authJwt.verifyToken,
-  //   controller.moderatoeBoard
-  // )
-
-  // app.get(
-  //   '/api/test/admin',
-  //   [authJwt.verifyToken],
-  //   controller.adminBoard
-  // )
 }

@@ -8,6 +8,14 @@ module.exports = (sequelize, Sequelize) => {
     },
     password: {
       type: Sequelize.STRING
+    },
+    dob: {
+      type: Sequelize.DATEONLY,
+      allowNull: false,
+      set(value) {
+        let dateObj = new Date(value)
+        this.setDataValue('dob', dateObj)
+      }
     }
   })
   return User
