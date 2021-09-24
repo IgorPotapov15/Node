@@ -7,14 +7,13 @@ let corsOptions = {
   origin: 'http://localhost:8081'
 }
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8080
 
 app.use(cors(corsOptions))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 const db = require('./models')
-const Role = db.role
 
 db.sequelize.sync({force: true}).then(() => {
   console.log('Drop and Resync Db')

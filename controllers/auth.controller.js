@@ -3,18 +3,19 @@ const config = require('../config/auth.config')
 const User = db.user
 
 let jwt = require('jsonwebtoken')
-let bcrypt = require('bcryptjs')
+let cryptoJS = require("crypto-js");
 
 exports.signup = (req, res) => {
   User.create({
     username: req.body.username,
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: cryptoJS.AES.encrypt(req.body.password, config.secret).toString()
   })
   .then(() => {
     res.send({ message: 'User war registered successfully' })
   })
   .catch(err => {
+    console.log(err)
     res.status(500).send({ message: err.message })
   })
 }
@@ -30,12 +31,10 @@ exports.signin = (req, res) => {
       return res.status(404).send({ message: 'User not found' })
     }
 
-    let passwordIsValid = bcrypt.compareSync(
-      req.body.password,
-      user.password
-    )
+    let decrPass = (cryptoJS.AES.decrypt(user.password, config.secret)).toString(cryptoJS.enc.Utf8)
+    let passIsValid = req.body.password === decrPass;
 
-    if (!passwordIsValid) {
+    if (!passIsValid) {
       return res.status(401).send({
         accessToken: null,
         message: 'Invalid password'
@@ -54,6 +53,7 @@ exports.signin = (req, res) => {
     })
   })
   .catch(err => {
+    console.log(err)
     res.status(500).send({ message: err.message })
   })
 }
