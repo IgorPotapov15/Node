@@ -10,23 +10,39 @@ module.exports = function(app) {
     next()
   })
 
-  app.get('/api/test/all', controller.allAccess)
-
   app.get(
-    '/api/test/user',
-    [authJwt.verifyToken],
-    controller.userBoard
+    '/api/personal/', 
+    authJwt.verifyToken,
+    controller.getPersonal
   )
 
-  app.get(
-    '/api/test/mod',
-    [authJwt.verifyToken],
-    controller.moderatoeBoard
+  app.patch(
+    '/api/personal/',
+    authJwt.verifyToken,
+    controller.updatePersonal
   )
 
-  app.get(
-    '/api/test/admin',
-    [authJwt.verifyToken],
-    controller.adminBoard
+  app.delete(
+    '/api/personal/',
+    authJwt.verifyToken,
+    controller.deletePersonal
   )
+
+  // app.get(
+  //   '/api/test/user',
+  //   authJwt.verifyToken,
+  //   controller.userBoard
+  // )
+
+  // app.get(
+  //   '/api/test/mod',
+  //   authJwt.verifyToken,
+  //   controller.moderatoeBoard
+  // )
+
+  // app.get(
+  //   '/api/test/admin',
+  //   [authJwt.verifyToken],
+  //   controller.adminBoard
+  // )
 }
