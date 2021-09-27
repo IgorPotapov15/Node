@@ -1,11 +1,13 @@
 const authJwt = require('./authJwt')
 const verifySignUp = require('./verifySignUp')
-const verifyPatch = require('./verifyPatch')
+const validateEmail = require('./validateEmail')
+const validateUsername = require('./validateUsername')
 const validation = require('./validation')
 
 module.exports = {
   authJwt,
   verifySignUp,
-  verifyPatch,
+  validateEmail,
+  validateUsername,
   validation
 }

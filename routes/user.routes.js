@@ -1,6 +1,6 @@
 const { authJwt } = require('../middleware')
 const { verifySignUp } = require('../middleware')
-const { verifyPatch } = require('../middleware')
+const { validateUsername, validateEmail } = require('../middleware')
 const controller = require('../controllers/user.controller')
 const { body } = require('express-validator')
 const { validation } = require('../middleware')
@@ -24,7 +24,8 @@ module.exports = function(app) {
     '/api/personal/',
     authJwt.verifyToken,
     validation,
-    // verifyPatch.checkAbilityToPatch,
+    validateEmail.checkEmail,
+    validateUsername.checkUsername,
     controller.updatePersonal
   )
 
