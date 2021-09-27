@@ -2,7 +2,6 @@ const db = require('../models')
 const User = db.User
 const jwt = require('jsonwebtoken')
 const config = require('../config/auth.config.js')
-const { validationResult } = require('express-validator')
 let cryptoJS = require("crypto-js")
 
 exports.getPersonal = (req, res) => {
@@ -25,18 +24,6 @@ exports.getPersonal = (req, res) => {
 }
 
 exports.updatePersonal = (req, res) => {
-  const errors = validationResult(req)
-  if (!errors.isEmpty()) {
-    let errorsObj = errors.array()
-    let newMsg
-    if (errorsObj[0].param === 'email') {
-      newMsg = 'Invalid email address'
-    }
-    if (errorsObj[0].param === 'password') {
-      newMsg = 'Password should be longer than 5 symbols'
-    }
-    return res.status(400).json({ newMsg })
-  }
   let token = req.headers['x-access-token']
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
@@ -45,7 +32,7 @@ exports.updatePersonal = (req, res) => {
       })
     }
     userId = decoded.id
-    let { username, email, password } = req.body
+    let { username, email, password, dob } = req.body
     User.findByPk(userId).then(user => {
       if (username) {
         user.username = username
@@ -55,6 +42,9 @@ exports.updatePersonal = (req, res) => {
       }
       if (password) {
         user.password = cryptoJS.AES.encrypt(password, config.secret).toString()
+      }
+      if (dob) {
+        user.dob = dob
       }
       user.save()
       res.status(200).send(user)
