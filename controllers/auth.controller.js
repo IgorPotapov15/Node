@@ -1,11 +1,24 @@
 const db = require('../models')
 const config = require('../config/auth.config')
 const User = db.user
+const { validationResult } = require('express-validator')
 
 let jwt = require('jsonwebtoken')
 let cryptoJS = require("crypto-js");
 
 exports.signup = (req, res) => {
+  const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+      let errorsObj = errors.array()
+      let newMsg
+      if (errorsObj[0].param === 'email') {
+        newMsg = 'Invalid email address'
+      }
+      if (errorsObj[0].param === 'password') {
+        newMsg = 'Password should be longer than 5 symbols'
+      }
+      return res.status(400).json({ newMsg })
+    }
   User.create({
     username: req.body.username,
     email: req.body.email,

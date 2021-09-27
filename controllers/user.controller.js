@@ -2,7 +2,8 @@ const db = require('../models')
 const User = db.user
 const jwt = require('jsonwebtoken')
 const config = require('../config/auth.config.js')
-let cryptoJS = require("crypto-js");
+const { validationResult } = require('express-validator')
+let cryptoJS = require("crypto-js")
 
 exports.getPersonal = (req, res) => {
   let token = req.headers['x-access-token']
@@ -24,6 +25,18 @@ exports.getPersonal = (req, res) => {
 }
 
 exports.updatePersonal = (req, res) => {
+  const errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let errorsObj = errors.array()
+    let newMsg
+    if (errorsObj[0].param === 'email') {
+      newMsg = 'Invalid email address'
+    }
+    if (errorsObj[0].param === 'password') {
+      newMsg = 'Password should be longer than 5 symbols'
+    }
+    return res.status(400).json({ newMsg })
+  }
   let token = req.headers['x-access-token']
   jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {

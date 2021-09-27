@@ -1,5 +1,6 @@
 const { verifySignUp } = require('../middleware')
 const controller = require('../controllers/auth.controller')
+const { body } = require('express-validator')
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -12,8 +13,10 @@ module.exports = function(app) {
 
   app.post(
     '/api/auth/signup',
-      verifySignUp.checkDuplicateUsernameOrEmail,
-      controller.signup
+    body('email').isEmail(),
+    body('password').isLength({ min: 5 }),
+    verifySignUp.checkDuplicateUsernameOrEmail,
+    controller.signup
   )
   app.post('/api/auth/signin', controller.signin)
 }
