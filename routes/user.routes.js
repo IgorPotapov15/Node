@@ -24,7 +24,7 @@ module.exports = function(app) {
     '/api/personal/',
     authJwt.verifyToken,
     validation,
-    verifyPatch.checkAbilityToPatch,
+    // verifyPatch.checkAbilityToPatch,
     controller.updatePersonal
   )
 

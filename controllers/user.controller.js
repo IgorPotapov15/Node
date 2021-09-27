@@ -47,7 +47,7 @@ exports.updatePersonal = (req, res) => {
         user.dob = dob
       }
       user.save()
-      res.status(200).send(user)
+      return res.status(200).send(user)
     })
   })
 }
@@ -63,7 +63,7 @@ exports.deletePersonal = (req, res) => {
     userId = decoded.id
     User.findByPk(userId).then(user => {
       user.destroy();
-      res.status(204).send({
+      return res.status(204).send({
         message: 'User has been deleted'
       })
     })

@@ -11,11 +11,11 @@ checkAbilityToPatch = (req, res, next) => {
       }
     }).then(user => {
       if (user) {
-        res.status(400).send({
+        return res.status(400).send({
           message: 'Username is already in use'
         })
-        return
       }
+      return next();
     })
   }
   if (email) {
@@ -26,14 +26,13 @@ checkAbilityToPatch = (req, res, next) => {
       }
     }).then(user => {
       if (user) {
-        res.status(400).send({
+        return res.status(400).send({
           message: 'Email is already in use'
         })
-        return
       }
+      return next();
     })
   }
-  next()
 }
 
 const verifyPatch = {
