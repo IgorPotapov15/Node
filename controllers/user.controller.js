@@ -1,5 +1,5 @@
 const db = require('../models')
-const User = db.user
+const User = db.User
 const jwt = require('jsonwebtoken')
 const config = require('../config/auth.config.js')
 const { validationResult } = require('express-validator')
